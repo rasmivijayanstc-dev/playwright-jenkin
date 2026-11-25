@@ -36,6 +36,6 @@ public void loginTest() {
     System.out.println("Login Successful!");
 
     browser.close();
-    //playwright.close();
+    playwright.close();
 }
 }
