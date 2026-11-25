@@ -4,7 +4,7 @@ pipeline {
 
     tools {
         jdk 'JDK17'
-        maven 'Maven3'
+        maven 'Maven'
     }
 
     triggers {
@@ -16,45 +16,28 @@ pipeline {
         stage('Checkout Code') {
             steps {
                 echo 'Checking out code from GitHub'
-                checkout scm
+
+                git branch: 'main',
+                    url: 'https://github.com/rasmivijayanstc-dev/playwright-jenkin.git'
             }
         }
 
         stage('Check Java and Maven') {
             steps {
-                script {
-                    if (isUnix()) {
-                        sh 'java -version'
-                        sh 'mvn -version'
-                    } else {
-                        bat 'java -version'
-                        bat 'mvn -version'
-                    }
-                }
+                bat 'java -version'
+                bat 'mvn -version'
             }
         }
 
         stage('Install Playwright Browser') {
             steps {
-                script {
-                    if (isUnix()) {
-                        sh 'mvn exec:java -Dexec.mainClass=com.microsoft.playwright.CLI -Dexec.args="install chromium"'
-                    } else {
-                        bat 'mvn exec:java -Dexec.mainClass=com.microsoft.playwright.CLI -Dexec.args="install chromium"'
-                    }
-                }
+                bat 'mvn exec:java -Dexec.mainClass=com.microsoft.playwright.CLI -Dexec.args="install chromium"'
             }
         }
 
         stage('Run Playwright Tests') {
             steps {
-                script {
-                    if (isUnix()) {
-                        sh 'mvn clean test'
-                    } else {
-                        bat 'mvn clean test'
-                    }
-                }
+                bat 'mvn clean test'
             }
         }
     }
